@@ -1,5 +1,6 @@
 package co.com.softka.biblioteca.biblioteca.controllers;
 
+import co.com.softka.biblioteca.biblioteca.dtos.ListarRecursosPorAreasDTO;
 import co.com.softka.biblioteca.biblioteca.dtos.RespuestaDTO;
 import co.com.softka.biblioteca.biblioteca.services.ServiceBisnes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +23,17 @@ public class ControllerBisnes {
     }
 
     @GetMapping("/prestamo/{id}")
-    public ResponseEntity<String> prestarRecurso(@PathVariable("id") String id){
+    public ResponseEntity<RespuestaDTO> prestarRecurso(@PathVariable("id") String id){
         return new ResponseEntity(serviceBisnes.prestarRecurso(id), HttpStatus.OK);
     }
 
     @GetMapping("/devolver/{id}")
-    public ResponseEntity<String> devolverRecurso(@PathVariable("id") String id){
+    public ResponseEntity<RespuestaDTO> devolverRecurso(@PathVariable("id") String id){
         return new ResponseEntity(serviceBisnes.devolverRecurso(id),HttpStatus.OK);
     }
 
     @GetMapping("/recomendacion/{id}")
-    public ResponseEntity<List<RespuestaDTO>> recomendar(@PathVariable("id") String areaId){
+    public ResponseEntity<ListarRecursosPorAreasDTO> recomendar(@PathVariable("id") String areaId){
         return new ResponseEntity(serviceBisnes.recomendarRecurso(areaId),HttpStatus.OK);
     }
 }

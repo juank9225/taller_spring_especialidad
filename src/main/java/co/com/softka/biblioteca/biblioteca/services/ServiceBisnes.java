@@ -1,9 +1,11 @@
 package co.com.softka.biblioteca.biblioteca.services;
 
+import co.com.softka.biblioteca.biblioteca.collections.AreaTematica;
 import co.com.softka.biblioteca.biblioteca.collections.Recurso;
-import co.com.softka.biblioteca.biblioteca.dtos.RecursoDTO;
+import co.com.softka.biblioteca.biblioteca.dtos.ListarRecursosPorAreasDTO;
 import co.com.softka.biblioteca.biblioteca.dtos.RespuestaDTO;
 import co.com.softka.biblioteca.biblioteca.mappers.RecursoMapper;
+import co.com.softka.biblioteca.biblioteca.repositories.RepositoryAreaTematica;
 import co.com.softka.biblioteca.biblioteca.repositories.RepositoryRecurso;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ import java.util.List;
 public class ServiceBisnes {
     @Autowired
     RepositoryRecurso repositoryRecurso;
+
+    @Autowired
+    RepositoryAreaTematica repositoryAreaTematica;
 
     RecursoMapper mapper = new RecursoMapper();
 
@@ -74,8 +79,15 @@ public class ServiceBisnes {
         return respuesta;
     }
 
-    public List<RecursoDTO> recomendarRecurso(String areaId){
-        List<Recurso> recursosXarea= (List<Recurso>) repositoryRecurso.findByareaTematicaId(areaId).orElseThrow(()->{throw new IllegalArgumentException("no se encontraron registros");});
-        return mapper.fromCollectionList(recursosXarea);
+    public ListarRecursosPorAreasDTO recomendarRecurso(String areaId){
+        ListarRecursosPorAreasDTO recursosPorArea = new ListarRecursosPorAreasDTO();
+
+        AreaTematica area = repositoryAreaTematica.findById(areaId).orElseThrow(() -> new RuntimeException("Area no encontrado"));
+        List<Recurso> recursosXarea= (List<Recurso>) repositoryRecurso.findByareaTematicaId(areaId).orElseThrow(()->{throw new IllegalArgumentException("no se encontraron registros asociados");});
+
+        recursosPorArea.setArea(area.getNombre());
+        recursosPorArea.setRecursos(recursosXarea);
+
+        return recursosPorArea;
     }
 }
