@@ -1,5 +1,6 @@
 package co.com.softka.biblioteca.biblioteca.controllers;
 
+import co.com.softka.biblioteca.biblioteca.dtos.RespuestaDTO;
 import co.com.softka.biblioteca.biblioteca.services.ServiceBisnes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ public class ControllerBisnes {
     ServiceBisnes serviceBisnes;
 
     @GetMapping("/disponibilidad/{id}")
-    public ResponseEntity<String> disponibilidadRecurso(@PathVariable("id") String id) {
+    public ResponseEntity<RespuestaDTO> disponibilidadRecurso(@PathVariable("id") String id) {
         return new ResponseEntity(serviceBisnes.disponibilidad(id), HttpStatus.OK);
     }
 

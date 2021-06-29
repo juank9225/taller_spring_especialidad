@@ -2,6 +2,7 @@ package co.com.softka.biblioteca.biblioteca.services;
 
 import co.com.softka.biblioteca.biblioteca.collections.Recurso;
 import co.com.softka.biblioteca.biblioteca.dtos.RecursoDTO;
+import co.com.softka.biblioteca.biblioteca.dtos.RespuestaDTO;
 import co.com.softka.biblioteca.biblioteca.mappers.RecursoMapper;
 import co.com.softka.biblioteca.biblioteca.repositories.RepositoryRecurso;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,21 @@ public class ServiceBisnes {
 
     RecursoMapper mapper = new RecursoMapper();
 
-    public String disponibilidad(String id){
+    public RespuestaDTO disponibilidad(String id){
+        RespuestaDTO respuesta = new RespuestaDTO();
+
         Recurso recurso = repositoryRecurso.findById(id).orElseThrow(()->{throw new IllegalArgumentException("no se encontro el recurso."); });
         if (recurso.getDisponible()){
-            return "El recuso "+mapper.fromCollection(recurso).getNombre()+" esta disponible.";
+            respuesta.setRespuesta("El recurso: "+mapper.fromCollection(recurso).getNombre()+" esta disponible.");
+            respuesta.setDisponible(true);
+            respuesta.setFecha(null);
+            return respuesta;
+
         }
-         return "El recurso No esta Disponible,la ultima fecha de prestamo es "+mapper.fromCollection(recurso).getFecha().toString();
+        respuesta.setRespuesta( "El recurso no esta Disponible, la ultima fecha de prestamo es: "+mapper.fromCollection(recurso).getFecha().toString());
+        respuesta.setDisponible(false);
+        respuesta.setFecha(mapper.fromCollection(recurso).getFecha());
+        return respuesta;
     }
 
     public String prestarRecurso(String id){
