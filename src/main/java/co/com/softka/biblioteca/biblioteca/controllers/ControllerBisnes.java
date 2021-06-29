@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/recurso")
 public class ControllerBisnes {
@@ -27,5 +29,10 @@ public class ControllerBisnes {
     @GetMapping("/devolver/{id}")
     public ResponseEntity<String> devolverRecurso(@PathVariable("id") String id){
         return new ResponseEntity(serviceBisnes.devolverRecurso(id),HttpStatus.OK);
+    }
+
+    @GetMapping("/recomendacion/{id}")
+    public ResponseEntity<List<RespuestaDTO>> recomendar(@PathVariable("id") String areaId){
+        return new ResponseEntity(serviceBisnes.recomendarRecurso(areaId),HttpStatus.OK);
     }
 }

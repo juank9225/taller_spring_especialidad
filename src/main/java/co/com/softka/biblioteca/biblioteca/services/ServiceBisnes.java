@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class ServiceBisnes {
@@ -22,39 +23,59 @@ public class ServiceBisnes {
 
         Recurso recurso = repositoryRecurso.findById(id).orElseThrow(()->{throw new IllegalArgumentException("no se encontro el recurso."); });
         if (recurso.getDisponible()){
-            respuesta.setRespuesta("El recurso: "+mapper.fromCollection(recurso).getNombre()+" esta disponible.");
+            respuesta.setRespuesta("El recurso: ( "+mapper.fromCollection(recurso).getNombre()+" ) esta disponible.");
             respuesta.setDisponible(true);
             respuesta.setFecha(null);
             return respuesta;
 
         }
-        respuesta.setRespuesta( "El recurso no esta Disponible, la ultima fecha de prestamo es: "+mapper.fromCollection(recurso).getFecha().toString());
+        respuesta.setRespuesta( "El recurso no esta Disponible, la ultima fecha de prestamo es: ( "+mapper.fromCollection(recurso).getFecha().toString()+" )");
         respuesta.setDisponible(false);
         respuesta.setFecha(mapper.fromCollection(recurso).getFecha());
         return respuesta;
     }
 
-    public String prestarRecurso(String id){
+    public RespuestaDTO prestarRecurso(String id){
+        RespuestaDTO respuesta = new RespuestaDTO();
         LocalDate fecha = LocalDate.now();
         Recurso recurso = repositoryRecurso.findById(id).orElseThrow(()->{throw new IllegalArgumentException("no se encontro el recurso."); });
         if (recurso.getDisponible()){
            recurso.setDisponible(false);
            recurso.setFecha(fecha);
            repositoryRecurso.save(recurso);
-           return "El recurso "+mapper.fromCollection(recurso).getNombre()+" ha sido prestado.";
+           respuesta.setRespuesta("El recurso: ("+mapper.fromCollection(recurso).getNombre()+" ) ha sido prestado.");
+           respuesta.setDisponible(false);
+           respuesta.setFecha(mapper.fromCollection(recurso).getFecha());
+           return respuesta;
+
         }
-        return "El recurso "+mapper.fromCollection(recurso).getNombre()+" no se encuentra disponible.";
+        respuesta.setRespuesta("El recurso: ( "+mapper.fromCollection(recurso).getNombre()+" ) no se encuentra disponible.");
+        respuesta.setDisponible(false);
+        respuesta.setFecha(mapper.fromCollection(recurso).getFecha());
+        return respuesta;
     }
 
-    public String devolverRecurso(String id){
+    public RespuestaDTO devolverRecurso(String id){
+        RespuestaDTO respuesta = new RespuestaDTO();
         LocalDate fecha = LocalDate.now();
         Recurso recurso = repositoryRecurso.findById(id).orElseThrow(()->{throw new IllegalArgumentException("no se encontro el recurso."); });
         if (!recurso.getDisponible()){
             recurso.setDisponible(true);
             recurso.setFecha(fecha);
             repositoryRecurso.save(recurso);
-            return "El recurso "+mapper.fromCollection(recurso).getNombre()+" ha sido devuelto.";
+            respuesta.setRespuesta("El recurso: ( "+mapper.fromCollection(recurso).getNombre()+" ) ha sido devuelto.");
+            respuesta.setDisponible(true);
+            respuesta.setFecha(mapper.fromCollection(recurso).getFecha());
+            return respuesta;
         }
-        return "El recurso "+mapper.fromCollection(recurso).getNombre()+" no esta en prestamo.";
+        respuesta.setRespuesta("El recurso: ( "+mapper.fromCollection(recurso).getNombre()+" ) no esta en prestamo.");
+        respuesta.setDisponible(false);
+        respuesta.setFecha(mapper.fromCollection(recurso).getFecha());
+        return respuesta;
+    }
+
+    public List<RecursoDTO> recomendarRecurso(String areaId){
+        List<Recurso> recursosXarea= (List<Recurso>) repositoryRecurso.findByareaTematicaId(areaId).orElseThrow(()->{throw new IllegalArgumentException("no se encontraron registros");});
+        return mapper.fromCollectionList(recursosXarea);
     }
 }
