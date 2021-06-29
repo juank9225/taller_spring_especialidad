@@ -96,4 +96,9 @@ public class ServiceBisnes {
         List<Recurso> recursos = repositoryRecurso.findBytipoRecurso(tipo).orElseThrow(()->new RuntimeException("Tipo no encontrado"));
         return mapper.fromCollectionList(recursos);
     }
+
+    public List<RecursoDTO> recomendarForAreaAndTipo(String area, String tipo){
+        List<Recurso> recursos = repositoryRecurso.findByareaTematicaIdAndTipoRecurso(area,tipo).orElseThrow(()->new RuntimeException("Recurso no encontrado"));
+        return mapper.fromCollectionList(recursos);
+    }
 }

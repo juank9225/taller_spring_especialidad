@@ -42,4 +42,9 @@ public class ControllerBisnes {
     public ResponseEntity<List<RecursoDTO>> recomendarTipo(@PathVariable("id") String tipo){
         return new ResponseEntity(serviceBisnes.recomendarPorTipo(tipo),HttpStatus.OK);
     }
+
+    @GetMapping("/recomendacion/area/tipo/{area}/{tipo}")
+    public ResponseEntity<List<RecursoDTO>> recomendarTipo(@PathVariable("area") String area,@PathVariable("tipo") String tipo){
+        return new ResponseEntity(serviceBisnes.recomendarForAreaAndTipo(area,tipo),HttpStatus.OK);
+    }
 }
