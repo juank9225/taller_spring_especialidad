@@ -3,6 +3,7 @@ package co.com.softka.biblioteca.biblioteca.services;
 import co.com.softka.biblioteca.biblioteca.collections.AreaTematica;
 import co.com.softka.biblioteca.biblioteca.collections.Recurso;
 import co.com.softka.biblioteca.biblioteca.dtos.ListarRecursosPorAreasDTO;
+import co.com.softka.biblioteca.biblioteca.dtos.RecursoDTO;
 import co.com.softka.biblioteca.biblioteca.dtos.RespuestaDTO;
 import co.com.softka.biblioteca.biblioteca.mappers.RecursoMapper;
 import co.com.softka.biblioteca.biblioteca.repositories.RepositoryAreaTematica;
@@ -89,5 +90,10 @@ public class ServiceBisnes {
         recursosPorArea.setRecursos(recursosXarea);
 
         return recursosPorArea;
+    }
+
+    public List<RecursoDTO> recomendarPorTipo(String tipo){
+        List<Recurso> recursos = repositoryRecurso.findBytipoRecurso(tipo).orElseThrow(()->new RuntimeException("Tipo no encontrado"));
+        return mapper.fromCollectionList(recursos);
     }
 }

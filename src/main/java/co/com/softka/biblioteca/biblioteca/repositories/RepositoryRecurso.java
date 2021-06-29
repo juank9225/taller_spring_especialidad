@@ -13,4 +13,7 @@ public interface RepositoryRecurso extends MongoRepository<Recurso,String> {
 
     @Transactional(readOnly = true)
     Optional<List<Recurso>> findByareaTematicaId(String areaTematicaId);
+
+    @Transactional(readOnly = true)
+    Optional<List<Recurso>> findBytipoRecurso(String tipo);
 }
