@@ -20,7 +20,7 @@ public class ControllerRecurso {
         return new ResponseEntity(serviceRecursoCRUD.obtenerPorId(id), HttpStatus.OK);
     }
 
-    @GetMapping()
+    @GetMapping("/lists")
     public ResponseEntity<List<RecursoDTO>> findAll() {
         return new ResponseEntity(serviceRecursoCRUD.obtenerTodos(), HttpStatus.OK);
     }

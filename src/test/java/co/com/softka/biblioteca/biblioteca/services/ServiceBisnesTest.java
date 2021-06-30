@@ -41,6 +41,7 @@ class ServiceBisnesTest {
         var resultado = serviceBisnes.disponibilidad("51db30202deddb25ca8010f5");
 
         Assertions.assertEquals(true, resultado.getDisponible());
+        Assertions.assertEquals(null, resultado.getFecha());
 
     }
 
