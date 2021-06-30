@@ -15,18 +15,6 @@ public class Recurso {
     private Boolean disponible;
     private String areaTematicaId;
 
-    public Recurso() {
-    }
-
-    public Recurso(String id, String nombre, String tipoRecurso, LocalDate fecha, Boolean disponible, String areaTematicaId) {
-        this.id = id;
-        this.nombre = nombre;
-        this.tipoRecurso = tipoRecurso;
-        this.fecha = fecha;
-        this.disponible = disponible;
-        this.areaTematicaId = areaTematicaId;
-    }
-
     public String getId() {
         return id;
     }
