@@ -55,7 +55,7 @@ class ControllerRecursoTest {
         doReturn(Lists.newArrayList(recurso1,recurso2)).when(serviceRecursoCRUD).obtenerTodos(); //creamos el mock
 
         //Act && Assert
-        mockMvc.perform(get("/recurso/lists"))
+        mockMvc.perform(get("/recurso"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(2)))
